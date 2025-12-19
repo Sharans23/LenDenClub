@@ -14,7 +14,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173", // Local frontend
-      "https://your-frontend-url.vercel.app", // Will update after deployment
+      "https://len-den-club.vercel.app", // Will update after deployment
       "http://localhost:3000",
     ],
     credentials: true,
