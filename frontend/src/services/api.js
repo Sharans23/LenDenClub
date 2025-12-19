@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5001/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -9,7 +9,6 @@ const api = axios.create({
   },
 });
 
-// Add token to requests
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -36,6 +35,15 @@ export const transactionAPI = {
   getTransactions: () => api.get("/transaction/transactions"),
 
   getBalance: () => api.get("/transaction/balance"),
+};
+
+export const userAPI = {
+  getProfile: () => api.get("/user/profile"),
+
+  updateProfile: (profileData) => api.put("/user/profile", profileData),
+
+  changePassword: (currentPassword, newPassword) =>
+    api.put("/user/change-password", { currentPassword, newPassword }),
 };
 
 export default api;

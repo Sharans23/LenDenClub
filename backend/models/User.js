@@ -1,7 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-// Define User model
 const User = sequelize.define(
   "User",
   {
@@ -23,25 +22,50 @@ const User = sequelize.define(
       type: DataTypes.DECIMAL(15, 2),
       defaultValue: 1000.0,
     },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "", // Add default value
+    },
+    fullName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "", // Add default value
+    },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "", // Add default value
+    },
   },
   {
-    tableName: "users", // table name in database
-    timestamps: false, // we already have created_at column
+    tableName: "users",
+    timestamps: true,
   }
 );
+
+// module.exports = User;
+// Add createdAt and updatedAt manually as virtual fields
+User.prototype.getCreatedAt = function () {
+  return this.createdAt || new Date();
+};
+
+User.prototype.getUpdatedAt = function () {
+  return this.updatedAt || new Date();
+};
 
 module.exports = User;
 
 // Import AuditLog
-const AuditLog = require('./AuditLog');
+const AuditLog = require("./AuditLog");
 
 // Define associations
-User.hasMany(AuditLog, { 
-  foreignKey: 'sender_id', 
-  as: 'sentTransactions' 
+User.hasMany(AuditLog, {
+  foreignKey: "sender_id",
+  as: "sentTransactions",
 });
 
-User.hasMany(AuditLog, { 
-  foreignKey: 'receiver_id', 
-  as: 'receivedTransactions' 
+User.hasMany(AuditLog, {
+  foreignKey: "receiver_id",
+  as: "receivedTransactions",
 });

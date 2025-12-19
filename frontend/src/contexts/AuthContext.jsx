@@ -1,29 +1,45 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { authAPI } from "../services/api";
 
-const AuthContext = createContext();
+// Create context
+const AuthContext = createContext(null);
 
+// Custom hook
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
+  if (context === null) {
     throw new Error("useAuth must be used within AuthProvider");
   }
   return context;
 };
 
+// Provider component
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in on mount
-    const token = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
+    const initializeAuth = () => {
+      try {
+        const token = localStorage.getItem("token");
+        const storedUser = localStorage.getItem("user");
 
-    if (token && storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
+        if (token && storedUser) {
+          // Set user from localStorage
+          setUser(JSON.parse(storedUser));
+        }
+      } catch (error) {
+        console.error("Auth initialization error:", error);
+        // Clear corrupted data
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeAuth();
   }, []);
 
   const login = async (username, password) => {
@@ -31,8 +47,11 @@ export const AuthProvider = ({ children }) => {
       const response = await authAPI.login(username, password);
       const { token, user } = response.data;
 
+      // Save to localStorage
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
+
+      // Update state
       setUser(user);
 
       return { success: true };
@@ -78,3 +97,6 @@ export const AuthProvider = ({ children }) => {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+
+// Default export for the context itself
+export default AuthContext;
