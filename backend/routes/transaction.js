@@ -122,7 +122,7 @@ router.post("/transfer", authenticate, async (req, res) => {
 router.get("/transactions", authenticate, async (req, res) => {
   const userId = req.user.id;
 
-  console.log("Fetching transactions for user ID:", userId);
+  // console.log("Fetching transactions for user ID:", userId);
 
   try {
     // Get all transactions where user is sender or receiver
@@ -138,10 +138,10 @@ router.get("/transactions", authenticate, async (req, res) => {
       raw: true,
     });
 
-    console.log("Found", logs.length, "transactions");
+    // console.log("Found", logs.length, "transactions");
 
     if (logs.length > 0) {
-      console.log("Sample transaction:", logs[0]);
+      // console.log("Sample transaction:", logs[0]);
     }
 
     // Format response

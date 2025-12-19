@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { transactionAPI } from "../services/api";
 
 const Dashboard = () => {
-  const { user, loading: authLoading } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [balance, setBalance] = useState(0);
   const [transactions, setTransactions] = useState([]);
@@ -96,7 +96,7 @@ const Dashboard = () => {
       );
 
       alert(
-        `✅ Transfer successful!\nNew balance: $${response.data.newBalance}`
+        ` Transfer successful!\nNew balance: $${response.data.newBalance}`
       );
 
       // Reset form
@@ -105,7 +105,7 @@ const Dashboard = () => {
       // Refresh data
       fetchData();
     } catch (error) {
-      alert(`❌ ${error.response?.data?.error || "Transfer failed"}`);
+      alert(` ${error.response?.data?.error || "Transfer failed"}`);
     } finally {
       setTransferLoading(false);
     }
@@ -184,10 +184,10 @@ const Dashboard = () => {
 
             <div className="flex items-center space-x-4">
               <div className="hidden md:block text-right">
-                <div className="text-sm text-gray-500">Welcome</div>
-                <div className="font-medium text-gray-900">
+                {/* <div className="text-sm text-gray-500">Welcome</div> */}
+                {/* <div className="font-medium text-2xl text-gray-900">
                   {user?.username}
-                </div>
+                </div> */}
               </div>
               <div className="flex items-center space-x-2 bg-blue-50 rounded-lg px-4 py-2">
                 <div className="text-sm text-gray-700">Balance:</div>
@@ -195,7 +195,7 @@ const Dashboard = () => {
                   {formatCurrency(balance)}
                 </div>
               </div>
-              <button
+              {/* <button
                 onClick={fetchData}
                 className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                 title="Refresh data"
@@ -213,7 +213,7 @@ const Dashboard = () => {
                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                   />
                 </svg>
-              </button>
+              </button> */}
               <button
                 onClick={handleLogout}
                 className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
@@ -258,7 +258,7 @@ const Dashboard = () => {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Transfer Form */}
           <div className="lg:col-span-1">
@@ -301,9 +301,6 @@ const Dashboard = () => {
                       placeholder="Enter receiver's user ID"
                       disabled={transferLoading}
                     />
-                    <p className="mt-1 text-xs text-gray-500">
-                      Available users: Bob (ID: 2), Charlie (ID: 3)
-                    </p>
                   </div>
 
                   <div>
@@ -348,60 +345,22 @@ const Dashboard = () => {
                   </button>
                 </form>
 
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <h3 className="text-sm font-medium text-gray-900 mb-3">
-                    Quick Actions
-                  </h3>
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setTransferData({
-                          receiverId: "2",
-                          amount: "100",
-                        })
-                      }
-                      className="text-sm px-3 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-lg transition-colors"
-                    >
-                      Send $100 to Bob
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setTransferData({
-                          receiverId: "3",
-                          amount: "50",
-                        })
-                      }
-                      className="text-sm px-3 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-lg transition-colors"
-                    >
-                      Send $50 to Charlie
-                    </button>
-                  </div>
-                </div>
               </div>
             </div>
 
             {/* Stats Card */}
-            <div className="card mt-6">
+            <div className="card h-52 mt-8">
               <div className="p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
                   Transaction Stats
                 </h3>
-                <div className="space-y-4">
+                <div className="space-y-5">
                   <div>
                     <div className="flex justify-between text-sm mb-1">
                       <span className="text-gray-600">Total Transactions</span>
                       <span className="font-medium">{transactions.length}</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-blue-600 h-2 rounded-full"
-                        style={{
-                          width: `${Math.min(transactions.length * 10, 100)}%`,
-                        }}
-                      ></div>
-                    </div>
+                    
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-1">
@@ -554,13 +513,13 @@ const Dashboard = () => {
                     </p>
                   </div>
                 ) : (
-                  <div className="overflow-x-auto rounded-lg border border-gray-200">
+                  <div className="overflow-y-auto h-107 rounded-lg border border-gray-200">
                     <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
+                      <thead className="bg-gray-50 sticky top-0 z-10">
                         <tr>
                           <th
                             scope="col"
-                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase -tracking-wider"
                           >
                             Type
                           </th>
@@ -578,19 +537,19 @@ const Dashboard = () => {
                           </th>
                           <th
                             scope="col"
-                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                           >
                             Status
                           </th>
                           <th
                             scope="col"
-                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                           >
                             Date & Time
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
+                      <tbody className=" bg-white divide-y divide-gray-200">
                         {filteredTransactions.map((tx) => (
                           <tr
                             key={tx.id}
@@ -747,13 +706,10 @@ const Dashboard = () => {
       </main>
 
       {/* Footer */}
-      <footer className="mt-12 border-t border-gray-200 py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center text-sm text-gray-500">
+      <footer className="border-t border-gray-200 ">
+        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          <div className="text-center pt-6 text-sm text-gray-500">
             <p>Transaction System • Secure Real-time Money Transfers</p>
-            <p className="mt-1">
-              Built with Node.js, PostgreSQL, React & Tailwind CSS
-            </p>
           </div>
         </div>
       </footer>

@@ -10,7 +10,16 @@ const sequelize = require("./config/database"); // Add this line
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173", // Local frontend
+      "https://your-frontend-url.vercel.app", // Will update after deployment
+      "http://localhost:3000",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Root route
