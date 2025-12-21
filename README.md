@@ -39,34 +39,6 @@ Auth	JWT, bcryptjs
 API Client	Axios
 Deployment	Backend – Render, Frontend – Vercel
 
-
-Project Structure
-├── backend/
-│   ├── config/
-│   │   └── database.js
-│   ├── models/
-│   │   ├── User.js
-│   │   ├── AuditLog.js
-│   │   └── index.js
-│   ├── routes/
-│   │   ├── auth.js
-│   │   ├── transaction.js
-│   │   └── user.js
-│   ├── middleware/
-│   │   └── auth.js
-│   └── index.js
-│
-├── frontend/
-│   ├── src/
-│   │   ├── contexts/
-│   │   ├── pages/
-│   │   ├── services.js
-│   │   └── main.jsx
-│   └── package.json
-│
-└── README.md
-
-
 Setup & Installation
 Prerequisites
   Node.js v18+
